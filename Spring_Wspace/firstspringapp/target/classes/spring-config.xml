@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+		
+<context:component-scan base-package="com.mphasis.firstspringapp.service"/>
+
+	<bean id="greetService"
+		class="com.mphasis.firstspringapp.service.GreetService"
+		scope="singleton" init-method="init" destroy-method="destroy"
+		lazy-init="true">
+		<constructor-arg value="Welcome to spring !" />
+	</bean>
+	<bean id="mailServerConfig"
+		class="com.mphasis.firstspringapp.service.MailServerConfig">
+		<constructor-arg value="192.1682.10" />
+		<constructor-arg value="tom" />
+		<constructor-arg value="X12RR%$" />
+	</bean>
+	<bean id="emailService"
+		class="com.mphasis.firstspringapp.service.EmailService">
+		<constructor-arg ref="mailServerConfig" />
+	</bean>
+	<bean id="orderService"
+		class="com.mphasis.firstspringapp.service.OrderService" autowire="byType">
+	<!--  	<property name="emailService" ref="emailService" />  -->
+	</bean>
+<bean id="studentService"
+      class="com.mphasis.firstspringapp.service.StudentService">
+    <property name="studentId" value="S001"/>
+    <property name="name" value="Alice Johnson"/>
+    <property name="grade" value="A"/>
+</bean>
+<bean id="carService"
+      class="com.mphasis.firstspringapp.service.CarService">
+    <constructor-arg value="Sedan"/>
+    <constructor-arg ref="engineService"/>
+    <constructor-arg value="2023"/>
+</bean>
+<bean id="engineService"
+		class="com.mphasis.firstspringapp.service.EngineService">
+		<constructor-arg value="V6" />
+		<constructor-arg value="300" />
+	</bean>
+	<bean id="bookService1" class="com.mphasis.firstspringapp.service.BookService">
+        <property name="title" value="Effective Java"/>
+        <property name="author" value="Joshua Bloch"/>
+    </bean>
+ 
+    <bean id="bookService2" class="com.mphasis.firstspringapp.service.BookService">
+        <property name="title" value="Spring in Action"/>
+        <property name="author" value="Craig Walls"/>
+    </bean>
+ 
+    <bean id="bookService3" class="com.mphasis.firstspringapp.service.BookService">
+        <property name="title" value="Clean Code"/>
+        <property name="author" value="Robert C. Martin"/>
+    </bean>
+ 
+    <bean id="libraryService" class="com.mphasis.firstspringapp.service.LibraryService">
+        <constructor-arg>
+            <list>
+                <ref bean="bookService1"/>
+                <ref bean="bookService2"/>
+                <ref bean="bookService3"/>
+            </list>
+        </constructor-arg>
+        <property name="libraryName" value="Central Library"/>
+    </bean>
+ <bean id="DepartmentService"
+          class="com.mphasis.firstspringapp.service.DepartmentService"
+          scope="prototype">
+        <property name="name" value="Finance"/>
+        <property name="code" value="FIN"/>
+    </bean>
+ 
+    <bean id="employeeService1" class="com.mphasis.firstspringapp.service.EmployeeService">
+        <property name="name" value="John Doe"/>
+        <property name="position" value="Accountant"/>
+        <property name="department" ref="DepartmentService"/>
+    </bean>
+ 
+    <bean id="employeeService2" class="com.mphasis.firstspringapp.service.EmployeeService"
+          autowire="byType">
+        <property name="name" value="Jane Smith"/>
+        <property name="position" value="Financial Analyst"/>
+    </bean>
+</beans>
